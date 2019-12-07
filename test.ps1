@@ -1,4 +1,8 @@
-﻿Import-Module .\Module\UIAutomation.dll
+﻿#Module\UIAutomation.dllがあること。
+#'<ウィンドウタイトル>'は書きなおす。
+#クリック座標も調べてなおす。
+
+Import-Module .\Module\UIAutomation.dll
 [UIAutomation.Preferences]::Highlight = $false
 
 #キャプチャ関数
@@ -52,7 +56,7 @@ $todayStr = $today.ToString("yyyyMMdd")
 New-Item $env:USERPROFILE\Desktop\$todayStr -ItemType Directory
 
 #メインメニューウィンドウを取得
-$window = Get-UiaWindow -Name '電卓'
+$window = Get-UiaWindow -Name '<ウィンドウタイトル>'
 
 #スケジュールボタンをクリック
 #Clickに反応しないが、座標移動はするので座標移動のために実行
@@ -60,21 +64,21 @@ $window.Control.Click(330, 680) | Out-Null
 Click-MouseButton
 
 #2週間分(14日分)ループ
-#for($i = 0; $i -lt 14; $i++){
-#    #日付変数を設定する
-#    $workDay = $today.AddDays($i)
-#
-#    #土曜日と日曜日はスクリーンショット不要
-#    if ($workDay.DayOfWeek -in @('Saturday','Sunday')){
-#        Start-Sleep -s 3
-#        Get-ScreenCapture $workDay.ToString("yyyyMMdd") $env:USERPROFILE\Desktop\$todayStr
-#    }
-#
-#    #次の日へボタンをクリック
-#    $scheduleWindow = Get-UiaWindow -Name '電卓'
-#    $scheduleWindow.Control.Click(330, 680) | Out-Null
-#    Click-MouseButton
-#}
-#
-#$scheduleWindow.Close()
-#
+for($i = 0; $i -lt 14; $i++){
+    #日付変数を設定する
+    $workDay = $today.AddDays($i)
+
+    #土曜日と日曜日はスクリーンショット不要
+    if ($workDay.DayOfWeek -in @('Saturday','Sunday')){
+        Start-Sleep -s 3
+        Get-ScreenCapture $workDay.ToString("yyyyMMdd") $env:USERPROFILE\Desktop\$todayStr
+    }
+
+    #次の日へボタンをクリック
+    $scheduleWindow = Get-UiaWindow -Name '<ウィンドウタイトル>'
+    $scheduleWindow.Control.Click(330, 680) | Out-Null
+    Click-MouseButton
+}
+
+$scheduleWindow.Close()
+
